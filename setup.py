@@ -21,10 +21,10 @@ CLASSIFIERS = [
   
 # calling the setup function 
 setup(name='HIV_Isoform_Checker',
-      version='1.1.0',
+      version='1.1.3',
       description='Filters .gtf file of suspected HIV isoforms and confirms the isoform identities.',
       long_description=long_description,
-      url='',#####
+      url='https://github.com/JessicaA2019/HIV_Isoform_Checker',
       author='Jessica Lauren ALbert',
       author_email='jessica.albert2001@gmail.com',
       license='MIT',

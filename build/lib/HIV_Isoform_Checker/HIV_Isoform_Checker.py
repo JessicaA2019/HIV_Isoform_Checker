@@ -6,8 +6,8 @@
 import regex as re
 import csv
 import math
-from Reference_aligner import *
-
+from HIV_Isoform_Checker.Reference_aligner import *
+#
 #########################
 
 #FILTER 1: only include class codes =, J, and m
