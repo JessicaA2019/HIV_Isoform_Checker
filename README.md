@@ -41,7 +41,7 @@ options:
 |-g value, --gap value|Sets gap tolerance. Default is 15.
 |-a value, --startBP value|Sets maximum starting bp. Default is 700.
 |-z value, --endBP value|Sets minimum ending bp. Default is 9500.
-|-l value, --lengthFS value|Sets maximum fully spliced transcript length. Default is 2100.
+|-l value, --lengthFS value|Sets maximum fully spliced transcript length. Default is 2500.
 |-n value, --NCE value|When set to True, csv file will have y/n columns for the precence of NCEs. Default is False.
 
 ## License

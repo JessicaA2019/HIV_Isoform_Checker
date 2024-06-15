@@ -40,8 +40,8 @@ Author: Jessica L Albert'''))
                         help = "Sets minimum ending bp.  Default is 9500.")
     
     parser.add_argument("-l", "--lengthFS", type = int, 
-                        metavar = "value", default = 2100,
-                        help = "Sets maximum fully spliced transcript length.  Default is 2100.")
+                        metavar = "value", default = 2500,
+                        help = "Sets maximum fully spliced transcript length.  Default is 2500.")
     
     parser.add_argument("-n", "--NCE", type = str, 
                         metavar = "value", default = "False",
