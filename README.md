@@ -1,4 +1,6 @@
 # HIV Isoform Checker
+[![DOI](https://zenodo.org/badge/813738980.svg)](https://zenodo.org/doi/10.5281/zenodo.13755946)
+
 ### Overview
 This package is a module in the [APHIX pipeline][APHIX]. HIV_Isoform_Checker takes a .gtf file of preliminarily filtered HIV transcripts and filters them to include only correctly assigned transcripts using the following filters. It also calculates the usage counts and percentages for each isoform type, donor site, acceptor site, and pairwise splice site combination.
 - FILTER 1: only include class codes =, J, and m
