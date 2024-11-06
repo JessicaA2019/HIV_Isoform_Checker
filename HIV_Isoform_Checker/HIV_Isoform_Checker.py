@@ -374,53 +374,58 @@ def filter_transcripts(input_file, output_file, gap_tolerance, min_end_bp, max_s
             exon_bps = list(range(exon[0], exon[1]))
             bp_list.append(exon_bps)
         bp_list = flatten_list(bp_list)
-        #check for nef compatability
-        if all(value in bp_list for value in list(range(nef_CDS[0], nef_CDS[1]))) and sample[7] <= min_FS_len:
-            sample[2] = "nef"
-            nef_list.append(sample)
-        #check for rev compatability
-        elif all(value in bp_list for value in list(range(rev_CDS1[0], rev_CDS1[1]))) and all(value in bp_list for value in list(range(rev_CDS2[0], rev_CDS2[1]))) and sample[7] <= min_FS_len:
-            for exon in sample[6]:
-                if exon[0] == A4a:
-                    sample[2] = "rev-A4a"
-                    rev_list.append(sample)
-                elif exon[0] == A4b:
-                    sample[2] = "rev-A4b"
-                    rev_list.append(sample)
-                elif exon[0] == A4c:
-                    sample[2] = "rev-A4c"
-                    rev_list.append(sample)
-        #check for tat compatability
-        elif all(value in bp_list for value in list(range(tat_CDS1[0], tat_CDS1[1]))) and all(value in bp_list for value in list(range(tat_CDS2[0], tat_CDS2[1]))) and sample[7] <= min_FS_len:
-            sample[2] = "tat"
-            tat_list.append(sample)
-        #check for vif compatibility
-        elif all(value in bp_list for value in list(range(vif_CDS[0], vif_CDS[1]))):
-            sample[2] = "vif"
-            vif_list.append(sample)
-        #check for vpr compatibility
-        elif all(value in bp_list for value in list(range(vpr_CDS[0], vpr_CDS[1]))):
-            sample[2] = "vpr"
-            vpr_list.append(sample)
-        #check for tat_unspliced compatibility
-        elif all(value in bp_list for value in list(range(tat_CDS1[0], tat_CDS1[1]))) and all(value in bp_list for value in list(range(tat_CDS2[0], tat_CDS2[1]))):
-                    sample[2] = "tat-unspliced"
-                    tat_list.append(sample)
-        #check for env compatibility
-        elif all(value in bp_list for value in list(range(env_CDS[0], env_CDS[1]))):
-            for exon in sample[6]:
-                if exon[0] == A5:
-                    sample[2] = "env"
-                    env_list.append(sample)
-                elif exon[0] == A4a:
-                    sample[2] = "env-A4a"
-                    env_list.append(sample)
-                elif exon[0] == A4b:
-                    sample[2] = "env-A4b"
-                    env_list.append(sample)
-                elif exon[0] == A4c:
-                    sample[2] = "env-A4c"
-                    env_list.append(sample)
+        #if sample short enough to be fully spliced
+        if sample[7] <= min_FS_len:
+            #check for tat compatability
+            if all(value in bp_list for value in list(range(tat_CDS1[0], tat_CDS1[1]))) and all(value in bp_list for value in list(range(tat_CDS2[0], tat_CDS2[1]))):
+                sample[2] = "tat"
+                tat_list.append(sample)
+            #check for rev compatability
+            elif all(value in bp_list for value in list(range(rev_CDS1[0], rev_CDS1[1]))) and all(value in bp_list for value in list(range(rev_CDS2[0], rev_CDS2[1]))):
+                for exon in sample[6]:
+                    if exon[0] == A4a:
+                        sample[2] = "rev-A4a"
+                        rev_list.append(sample)
+                    elif exon[0] == A4b:
+                        sample[2] = "rev-A4b"
+                        rev_list.append(sample)
+                    elif exon[0] == A4c:
+                        sample[2] = "rev-A4c"
+                        rev_list.append(sample)
+            
+            #check for nef compatability
+            elif all(value in bp_list for value in list(range(nef_CDS[0], nef_CDS[1]))):
+                sample[2] = "nef"
+                nef_list.append(sample)
+        #if sample too long to be fully spliced (so it is partially spliced)
+        elif sample[7] > min_FS_len:
+            #check for vif compatibility
+            elif all(value in bp_list for value in list(range(vif_CDS[0], vif_CDS[1]))):
+                sample[2] = "vif"
+                vif_list.append(sample)
+            #check for vpr compatibility
+            elif all(value in bp_list for value in list(range(vpr_CDS[0], vpr_CDS[1]))):
+                sample[2] = "vpr"
+                vpr_list.append(sample)
+            #check for tat_unspliced compatibility
+            elif all(value in bp_list for value in list(range(tat_CDS1[0], tat_CDS1[1]))) and all(value in bp_list for value in list(range(tat_CDS2[0], tat_CDS2[1]))):
+                        sample[2] = "tat-unspliced"
+                        tat_list.append(sample)
+            #check for env compatibility
+            elif all(value in bp_list for value in list(range(env_CDS[0], env_CDS[1]))):
+                for exon in sample[6]:
+                    if exon[0] == A5:
+                        sample[2] = "env"
+                        env_list.append(sample)
+                    elif exon[0] == A4a:
+                        sample[2] = "env-A4a"
+                        env_list.append(sample)
+                    elif exon[0] == A4b:
+                        sample[2] = "env-A4b"
+                        env_list.append(sample)
+                    elif exon[0] == A4c:
+                        sample[2] = "env-A4c"
+                        env_list.append(sample)
         else:
             still_misassigned.append(sample)
         sample_num = sample_num + 1

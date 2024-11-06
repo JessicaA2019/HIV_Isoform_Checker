@@ -11,8 +11,7 @@ This package is a module in the [APHIX pipeline][APHIX]. HIV_Isoform_Checker tak
 - FILTER 7: keep only correct Tat samples(long samples added to possible_misassigned)   
 - FILTER 8: keep only correct Vif samples
 - FILTER 9: keep only correct Vpr samples
-- FILTER 10: check possible_misassigned for partial splice compatibility
-           (vif -> vpr -> unslpiced_tat -> env)
+- FILTER 10:  check possible_misassigned for fully spliced then partial splice compatibility (tat -> rev -> nef - > vif -> vpr -> unspliced_tat -> env)
 
 > Note: This code currently relies on a very specific setup of the gtf file to work properly. The note must be in the order designated in the [].
 transcript entry = ref genome, analysis_pathway, transcript, start, end, ".", "+", ".", [transcript id; gene id; gene_name; xloc; ref_gene_id; contained_in; cmp_ref; class_code; tss_id]

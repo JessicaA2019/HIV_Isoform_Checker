@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: HIV_Isoform_Checker
-Version: 1.1.5
+Version: 1.1.6
 Summary: Filters .gtf file of suspected HIV isoforms and confirms the isoform identities
 Home-page: https://github.com/JessicaA2019/HIV_Isoform_Checker
 Author: Jessica Lauren ALbert
@@ -37,10 +37,8 @@ Description-Content-Type: text/markdown
 License-File: LICENSE.txt
 
 # HIV Isoform Checker
-
-This package takes a .gtf file of preliminarily filtered HIV transcripts from ONT sequencing
-and filters them to include only correctly assigned transcripts using the
-following filters.
+### Overview
+This package is a module in the [APHIX pipeline][APHIX]. HIV_Isoform_Checker takes a .gtf file of preliminarily filtered HIV transcripts and filters them to include only correctly assigned transcripts using the following filters. It also calculates the usage counts and percentages for each isoform type, donor site, acceptor site, and pairwise splice site combination.
 - FILTER 1: only include class codes =, J, and m
 - FILTER 2: only include samples with end values >= min_end_bp and
            start values <= max_start_bp
@@ -51,39 +49,81 @@ following filters.
 - FILTER 7: keep only correct Tat samples(long samples added to possible_misassigned)   
 - FILTER 8: keep only correct Vif samples
 - FILTER 9: keep only correct Vpr samples
-- FILTER 10: check possible_misassigned for partial splice compatibility
-           (vif -> vpr -> unslpiced_tat -> env)
+- FILTER 10:  check possible_misassigned for fully spliced then partial splice compatibility (tat -> rev -> nef - > vif -> vpr -> unspliced_tat -> env)
 
 > Note: This code currently relies on a very specific setup of the gtf file to work properly. The note must be in the order designated in the [].
 transcript entry = ref genome, analysis_pathway, transcript, start, end, ".", "+", ".", [transcript id; gene id; gene_name; xloc; ref_gene_id; contained_in; cmp_ref; class_code; tss_id]
 >exon entry = ref genome, analysis_pathway, exon, start, end, ".", "+", ".", [transcript id; gene id; exon number]
 
+******************
 ## Installation
-Fast install:
+### Quick Install
+```bash
+pip install HIV_Isoform_Checker
+```
+### Manual Install
+```bash
+git clone https://github.com/JessicaA2019/HIV_Isoform_Checker.git 
+cd HIV_Isoform_Checker
+python setup.py install
+```
+### Dependencies
+Some dependencies currently do not install with Chimera_Buster. Please pip install the following dependencies:
+* mappy
+* regex
+* argparse
 
-    pip install HIV_Isoform_Checker
-   
-
+### Testing
+To test if the installation was successful run the following command with the test files provided:
+```bash
+HIV_Isoform_Checker HIC_test.gtf HIV_Isoform_Checker_test NL43.fa
+ ```
+ ******************
 ## Usage
-    HIV_Isoform_Checker [options] input_file_name output_file_prefix ref_file_name
+```bash
+HIV Isoform Checker [options] input_file_name output_file_prefix ref_file
+```
+### Inputs
+To run the pipeline the following input files are required:
+| Input | Description |
+| ------ | ------ |
+|input_file_name  |    Designates .gtf to be filtered. This is required.|
+|output_file_prefix  |  Designates output file prefix. This is required.|
+| ref_file | The location of the reference genome fasta file.|
 
-positional arguments:
-  input_file_name       Designates input file to be filtered. This is required.
-  output_file_prefix    Designates output file prefix. This is required.
-  ref_file_name         Designates reference CDS file name. This should be a python file with only a dictionary with the splice donor sites, splice acceptor sites and gene CDS regions defined. This is required. An example is available in the test data set.
-
-options:
+The following input files are optional:
 | Arguement | Function |
 | ------ | ------ |
-|-h, --help |  show this help message and exit |
-|-g value, --gap value|Sets gap tolerance. Default is 15.
-|-a value, --startBP value|Sets maximum starting bp. Default is 700.
-|-z value, --endBP value|Sets minimum ending bp. Default is 9500.
-|-l value, --lengthFS value|Sets maximum fully spliced transcript length. Default is 2500.
-|-n value, --NCE value|When set to True, csv file will have y/n columns for the precence of NCEs. Default is False.
+|-h, --help |  Prints help message to terminal. |
+|-g value, --gap value |  Sets gap tolerance. If a read has a gap longer than this value that is not associated with known splice sites, the read will be filtered out as a sequencing error. The default value is 15. |
+|-a value, --startBP value |  Sets maximum starting bp in order to insure the presence of the first exon and by proxy a full read. Default is 700. |
+|-z value, --endBP value |  Sets minimum ending bp in order to insure the presence of the last exon and by proxy a full read. Default is 9500. |
+|-l value, --lengthFS value |  Sets maximum fully spliced transcript length. If a read is longer than this value, then it will be considered partial spliced. This is based off HIV-1 references without any major insertions or deletions. If your sequences have larger deletions (ex: deltaENV or deltaMA) or insertions (ex: multiple markers such as eGFP), this value may need to be adjusted. Default is 2500. |
+|-n value, --NCE value | When set to True, the output csv file will have y/n columns for the precence of NCEs. Default is False.|
+
+### Outputs
+ The main output files created by the pipeline are:
+| Output | Description |
+|--------|-------------|
+| {output_file_prefix}.csv | A csv containing the sample ID, cluster size, isoform ID, starting and ending base pair, gffcompare class code, exon boundaries, coverage length, size normalized counts, precence of NCEs (optional), and any additional notes for each sample. |
+| {output_file_prefix}_altered.txt | A list of all sample IDs with altered exons to fill in small gaps. |
+| {output_file_prefix}_pass.txt | A list of all sample IDs that passed all filters. |
+| {output_file_prefix}_fail.txt | A list of all sample IDs that failed one or more filters. |
+| {output_file_prefix}_isoform_counts.csv | A csv of the usage counts and percentages for each isoform type. |
+| {output_file_prefix}_splice_site_usage.csv | A csv of the the usage counts and percentages for each donor site, acceptor site, and pairwise splice site combination. |
+| {output_file_prefix}_ref_coordinates.txt | A list of splice site and CDS coordinates for given reference. |
+| {output_file_prefix}.log | A log of the arguments given to the script. |
+
+**************************
+## Help
+For issues or bugs, please report them on the [issues page][issues]. 
 
 ## License
 
-MIT - Copyright (c) 2023 Jessica Lauren Albert
+MIT - Copyright (c) 2024 Jessica Lauren Albert
 
-# HIV_Isoform_Checker
+
+[//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
+
+   [APHIX]: <https://github.com/JessicaA2019/APHIX>
+   [issues]: <https://github.com/JessicaA2019/HIV_Isoform_Checker/issues>
