@@ -21,7 +21,7 @@ CLASSIFIERS = [
   
 # calling the setup function 
 setup(name='HIV_Isoform_Checker',
-      version='1.1.8',
+      version='1.1.9',
       description='Filters .gtf file of suspected HIV isoforms and confirms the isoform identities.',
       long_description=long_description,
       url='https://github.com/JessicaA2019/HIV_Isoform_Checker',

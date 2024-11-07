@@ -110,6 +110,8 @@ def filter_transcripts(input_file, output_file, gap_tolerance, min_end_bp, max_s
             cluster_size = re.findall('[|](.*)["]', sublist[3])
             if len(cluster_size) >= 1:
                 splice_varient.append(int(cluster_size[0]))
+            else:
+                splice_varient.append('"ERROR"')
             #add cmp_ref to list [2]
             splice_varient.append(sublist[-4])
             cmp_ref = re.findall('["](.*)["]', splice_varient[2])
@@ -143,8 +145,11 @@ def filter_transcripts(input_file, output_file, gap_tolerance, min_end_bp, max_s
             sqrt_cov_len = math.sqrt(splice_varient[7])
             splice_varient.append(sqrt_cov_len)
             #add normalized counts [9]
-            norm_counts = splice_varient[1]* splice_varient[8]
-            splice_varient.append(norm_counts)
+            if splice_varient[1] != '"ERROR"':
+                norm_counts = splice_varient[1]* splice_varient[8]
+                splice_varient.append(norm_counts)
+            else:
+                splice_varient.append('"ERROR"')
             if NCE_option == "True" or NCE_option == "true" or NCE_option == "T" or NCE_option == "t":
                 #check for NCE2 [10]
                 for exon in splice_varient[6]:
@@ -164,12 +169,9 @@ def filter_transcripts(input_file, output_file, gap_tolerance, min_end_bp, max_s
                         splice_varient.append("Y")
                 if len(splice_varient) < 13:
                     splice_varient.append("N")
-                #add created list to list of all samples
-                if len(splice_varient) >= 13:
-                    working_list.append(splice_varient)
-            elif len(splice_varient) >= 10:
-                working_list.append(splice_varient)
-            
+            #add created list to list of all samples
+            if splice_varient[1] != '"ERROR"':
+                working_list.append(splice_varient)            
 
     ##FILTER 1: sort working list to only include class codes =, J, and m
     filter1_list = []

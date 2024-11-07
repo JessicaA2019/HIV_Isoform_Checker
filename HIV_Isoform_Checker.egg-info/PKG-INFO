@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: HIV_Isoform_Checker
-Version: 1.1.8
+Version: 1.1.9
 Summary: Filters .gtf file of suspected HIV isoforms and confirms the isoform identities
 Home-page: https://github.com/JessicaA2019/HIV_Isoform_Checker
 Author: Jessica Lauren ALbert

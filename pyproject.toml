@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "HIV_Isoform_Checker"
-version = "1.1.8"
+version = "1.1.9"
 authors = [
   { name="Jessica Lauren Albert", email="jessica.albert2001@gmail.com" },
 ]
