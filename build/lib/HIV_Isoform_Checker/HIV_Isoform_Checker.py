@@ -400,7 +400,7 @@ def filter_transcripts(input_file, output_file, gap_tolerance, min_end_bp, max_s
         #if sample too long to be fully spliced (so it is partially spliced)
         elif sample[7] > min_FS_len:
             #check for vif compatibility
-            elif all(value in bp_list for value in list(range(vif_CDS[0], vif_CDS[1]))):
+            if all(value in bp_list for value in list(range(vif_CDS[0], vif_CDS[1]))):
                 sample[2] = "vif"
                 vif_list.append(sample)
             #check for vpr compatibility
