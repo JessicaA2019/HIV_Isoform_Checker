@@ -108,7 +108,8 @@ def filter_transcripts(input_file, output_file, gap_tolerance, min_end_bp, max_s
             splice_varient[0] = transcript_id[0]
             #add cluster size to list [1]
             cluster_size = re.findall('[|](.*)["]', sublist[3])
-            splice_varient.append(int(cluster_size[0]))
+            if len(cluster_size) >= 1:
+                splice_varient.append(int(cluster_size[0]))
             #add cmp_ref to list [2]
             splice_varient.append(sublist[-4])
             cmp_ref = re.findall('["](.*)["]', splice_varient[2])
@@ -162,9 +163,13 @@ def filter_transcripts(input_file, output_file, gap_tolerance, min_end_bp, max_s
                     if exon[1] == D3 and exon[0] == A2:
                         splice_varient.append("Y")
                 if len(splice_varient) < 13:
-                    splice_varient.append("N")   
-            #add created list to list of all samples 
-            working_list.append(splice_varient)
+                    splice_varient.append("N")
+                #add created list to list of all samples
+                if len(splice_varient) >= 13:
+                    working_list.append(splice_varient)
+            elif len(splice_varient) >= 10:
+                working_list.append(splice_varient)
+            
 
     ##FILTER 1: sort working list to only include class codes =, J, and m
     filter1_list = []
